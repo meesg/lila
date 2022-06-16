@@ -1,9 +1,11 @@
 import Ctrl from './ctrl';
-import { h } from 'snabbdom';
+import { h, VNode } from 'snabbdom';
 import { Game } from './interfaces';
 
-function miniGame(game: Game) {
-  return h(
+const miniBoardHook = (vnode: VNode) => lichess.miniBoard.init(vnode.elm as HTMLElement);
+
+const miniGame = (game: Game) =>
+  h(
     'a',
     {
       attrs: {
@@ -15,12 +17,8 @@ function miniGame(game: Game) {
       h('span.mini-board.is2d', {
         attrs: { 'data-state': `${game.fen},${game.color},${game.lastMove}` },
         hook: {
-          insert(vnode) {
-            lichess.miniBoard.init(vnode.elm as HTMLElement);
-          },
-          update(vnode) {
-            lichess.miniBoard.init(vnode.elm as HTMLElement);
-          },
+          insert: miniBoardHook,
+          update: miniBoardHook,
         },
       }),
       h('span.vstext', [
@@ -39,7 +37,6 @@ function miniGame(game: Game) {
       ]),
     ]
   );
-}
 
 export default function (ctrl: Ctrl) {
   if (!ctrl.vm.answer) return;
