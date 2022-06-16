@@ -3,12 +3,12 @@ import Ctrl from './ctrl';
 import { Chart } from './interfaces';
 import type * as Highcharts from 'highcharts';
 
-function metricDataTypeFormat(dt: string) {
+const metricDataTypeFormat = (dt: string) => {
   if (dt === 'seconds') return '{point.y:.1f}';
   if (dt === 'average') return '{point.y:,.1f}';
   if (dt === 'percent') return '{point.y:.1f}%';
   return '{point.y:,.0f}';
-}
+};
 
 function dimensionDataTypeFormat(dt: string) {
   if (dt === 'date') return '{value:%Y-%m-%d}';
