@@ -43,10 +43,10 @@ function controls(ctrl: Controller): VNode {
           el,
           e => {
             const action = dataAct(e);
-            if (action === 'prev') control.prev(ctrl);
-            else if (action === 'next') control.next(ctrl);
-            else if (action === 'first') control.first(ctrl);
-            else if (action === 'last') control.last(ctrl);
+            if (action === 'prev' && ctrl.vm.mode != 'play') control.prev(ctrl);
+            else if (action === 'next' && ctrl.vm.mode != 'play') control.next(ctrl);
+            else if (action === 'first' && ctrl.vm.mode != 'play') control.first(ctrl);
+            else if (action === 'last' && ctrl.vm.mode != 'play') control.last(ctrl);
           },
           ctrl.redraw
         );
@@ -54,10 +54,10 @@ function controls(ctrl: Controller): VNode {
     },
     [
       h('div.jumps', [
-        jumpButton('', 'first', !node.ply),
-        jumpButton('', 'prev', !node.ply),
-        jumpButton('', 'next', !nextNode, goNext),
-        jumpButton('', 'last', !nextNode, goNext),
+        jumpButton('', 'first', !node.ply || ctrl.vm.mode == 'play'),
+        jumpButton('', 'prev', !node.ply || ctrl.vm.mode == 'play'),
+        jumpButton('', 'next', !nextNode || ctrl.vm.mode == 'play', goNext),
+        jumpButton('', 'last', !nextNode || ctrl.vm.mode == 'play', goNext),
       ]),
     ]
   );
