@@ -110,14 +110,19 @@
     font-size: 1.5em;
   }
 
-  .view_solution {
+  .puzzle_actions {
     margin-top: 1.5em;
     text-align: center;
     visibility: hidden;
     opacity: 0;
   }
 
-  .view_solution.show {
+  .puzzle_actions > * {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+
+  .puzzle_actions.show {
     visibility: visible;
     opacity: 0.8;
 
@@ -147,4 +152,22 @@
   .glowing {
     color: $c-font-clearer;
   }
+}
+
+.solve__button {
+  background-color: #629924;
+  opacity: 0.85;
+}
+
+.solve__button:not(.disabled):hover {
+  color: #fff;
+  background-color: #629924;
+  opacity: 1;
+}
+
+move.disabled {
+  background-color: #bf811d;
+  opacity: 0.85;
+  color: #fff;
+  cursor: default; // TODO: Little bit of a dirty hack, look into how to add/remove hook to/from nodes
 }

@@ -460,6 +460,31 @@ export default function (opts: PuzzleOpts, redraw: Redraw): Controller {
     userJump(fromNodeList(vm.mainline.slice(0, newPly + 1)));
   }
 
+  function solve(): void {
+    mergeSolution(tree, vm.initialPath, data.puzzle.solution, vm.pov);
+    reorderChildren(vm.initialPath, true);
+
+    // try and play the solution next move
+    const next = vm.node.children[0];
+    userJump(vm.path + next.id)
+
+    // if (next && next.puzzle === 'good') userJump(vm.path + next.id);
+    // else {
+    //   const firstGoodPath = treeOps.takePathWhile(vm.mainline, node => node.puzzle != 'good');
+    //   if (firstGoodPath) userJump(firstGoodPath + tree.nodeAtPath(firstGoodPath).children[0].id);
+    // }
+
+    // vm.autoScrollRequested = true;
+    // vm.voteDisabled = true;
+    // redraw();
+    // startCeval();
+    // setTimeout(() => {
+    //   vm.voteDisabled = false;
+    //   redraw();
+    // }, 500);
+  }
+
+
   function viewSolution(): void {
     sendResult(false);
     vm.mode = 'view';
@@ -575,6 +600,7 @@ export default function (opts: PuzzleOpts, redraw: Redraw): Controller {
     keyboardMove,
     keyboardHelp,
     userJump,
+    solve,
     viewSolution,
     nextPuzzle,
     vote,

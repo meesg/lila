@@ -58,6 +58,7 @@ export interface Controller extends KeyboardController {
   ground: Prop<CgApi | undefined>;
   setChessground(cg: CgApi): void;
   makeCgOpts(): CgConfig;
+  solve(): void;
   viewSolution(): void;
   nextPuzzle(): void;
   vote(v: boolean): void;

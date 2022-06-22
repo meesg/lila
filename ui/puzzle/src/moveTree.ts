@@ -25,6 +25,21 @@ export function pgnToTree(pgn: San[]): Tree.Node {
   return root;
 }
 
+export function mergeNonVisualMoves(root: TreeWrapper, initialPath: Tree.Path, solution: Uci[]): void {
+  const initialNode = root.nodeAtPath(initialPath);
+  const pos = Chess.fromSetup(parseFen(initialNode.fen).unwrap()).unwrap();
+  const fromPly = initialNode.ply;
+  const nodes = solution.map((uci, i) => {
+    const move = normalizeMove(pos, parseUci(uci)!);
+    const san = makeSan(pos, move);
+    pos.play(move);
+    const node = makeNode(pos, move, fromPly + i + 1, san);
+    node.disabled = true;
+    return node;
+  });
+  root.addNodes(nodes, initialPath);
+}
+
 export function mergeSolution(root: TreeWrapper, initialPath: Tree.Path, solution: Uci[], pov: Color): void {
   const initialNode = root.nodeAtPath(initialPath);
   const pos = Chess.fromSetup(parseFen(initialNode.fen).unwrap()).unwrap();

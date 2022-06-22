@@ -11,8 +11,11 @@ import { onInsert, bindMobileMousedown, bindNonPassive } from 'common/snabbdom';
 import { render as treeView } from './tree';
 import { view as cevalView } from 'ceval';
 import { render as renderKeyboardMove } from 'keyboardMove';
+import { mergeNonVisualMoves } from '../moveTree';
 
 function renderAnalyse(ctrl: Controller): VNode {
+  const moves = ctrl.getData().puzzle.solution.slice(0, -1)
+  mergeNonVisualMoves(ctrl.getTree(), ctrl.vm.initialPath, moves)
   return h('div.puzzle__moves.areplay', [treeView(ctrl)]);
 }
 
@@ -34,7 +37,6 @@ function jumpButton(icon: string, effect: string, disabled: boolean, glowing = f
 function controls(ctrl: Controller): VNode {
   const node = ctrl.vm.node;
   const nextNode = node.children[0];
-  const goNext = ctrl.vm.mode == 'play' && nextNode && nextNode.puzzle != 'fail';
   return h(
     'div.puzzle__controls.analyse-controls',
     {
@@ -43,10 +45,10 @@ function controls(ctrl: Controller): VNode {
           el,
           e => {
             const action = dataAct(e);
-            if (action === 'prev' && ctrl.vm.mode != 'play') control.prev(ctrl);
-            else if (action === 'next' && ctrl.vm.mode != 'play') control.next(ctrl);
-            else if (action === 'first' && ctrl.vm.mode != 'play') control.first(ctrl);
-            else if (action === 'last' && ctrl.vm.mode != 'play') control.last(ctrl);
+            if (action === 'prev') control.prev(ctrl);
+            else if (action === 'next') control.next(ctrl);
+            else if (action === 'first') control.first(ctrl);
+            else if (action === 'last') control.last(ctrl);
           },
           ctrl.redraw
         );
@@ -54,10 +56,10 @@ function controls(ctrl: Controller): VNode {
     },
     [
       h('div.jumps', [
-        jumpButton('', 'first', !node.ply || ctrl.vm.mode == 'play'),
-        jumpButton('', 'prev', !node.ply || ctrl.vm.mode == 'play'),
-        jumpButton('', 'next', !nextNode || ctrl.vm.mode == 'play', goNext),
-        jumpButton('', 'last', !nextNode || ctrl.vm.mode == 'play', goNext),
+        jumpButton('', 'first', !node.ply),
+        jumpButton('', 'prev', !node.ply),
+        jumpButton('', 'next', !nextNode || nextNode.disabled === true),
+        jumpButton('', 'last', !nextNode || nextNode.disabled === true),
       ]),
     ]
   );

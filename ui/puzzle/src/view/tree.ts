@@ -113,6 +113,7 @@ function renderMainlineMoveOf(ctx: Ctx, node: Tree.Node, opts: RenderOpts): VNod
     hist: node.ply < ctx.ctrl.vm.initialNode.ply,
   };
   if (node.puzzle) classes[node.puzzle] = true;
+  if (node.disabled) classes.disabled = true;
   return h(
     'move',
     {

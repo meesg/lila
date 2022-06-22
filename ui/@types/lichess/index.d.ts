@@ -444,6 +444,7 @@ declare namespace Tree {
     fail?: boolean;
     puzzle?: 'win' | 'fail' | 'good' | 'retry';
     crazy?: NodeCrazy;
+    disabled?: boolean;
   }
 
   export interface NodeCrazy {
